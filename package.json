@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git@github.com:tessOu56/vue-motion-sandbox.git"
   },
-  "homepage": "https://github.com/tessOu56/vue-motion-sandbox#readme",
+  "homepage": "https://tessou56.github.io/vue-motion-sandbox/",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
