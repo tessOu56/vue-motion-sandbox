@@ -1,5 +1,9 @@
 # Vue Motion Sandbox
 
+[![CI & Pages](https://github.com/tessOu56/vue-motion-sandbox/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/tessOu56/vue-motion-sandbox/actions/workflows/deploy-pages.yml)
+
+**🔗 Live Demo: <https://tessou56.github.io/vue-motion-sandbox/>**
+
 A Vue 3 sandbox for experimenting with motion effects, animations, and interactive web experiences. This project provides a playground for testing various animation techniques, 3D graphics, and interactive elements using modern libraries and frameworks.
 
 ## ✨ Features
