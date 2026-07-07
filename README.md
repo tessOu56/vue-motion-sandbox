@@ -6,6 +6,8 @@
 
 A Vue 3 sandbox for experimenting with motion effects, animations, and interactive web experiences. This project provides a playground for testing various animation techniques, 3D graphics, and interactive elements using modern libraries and frameworks.
 
+> **Relationship to nx-playground**: this repo shares its source with `apps/vue-motion` in the [`nx-playground`](https://github.com/tessOu56/nx-playground) monorepo — this standalone copy exists for independent GitHub Pages deployment. When reviewing the portfolio, treat the monorepo as the primary source.
+
 ## ✨ Features
 
 - **Particle Effects**: Interactive canvas-based particle systems with customizable parameters
