@@ -26,3 +26,8 @@ pnpm run serve   # dev server
 
 - Sync source: `nx-playground/apps/vue-motion`
 - React promote path: nx `apps/profile` → ai-search-portal `labs/motion/`
+
+## 開發環境（2026-07 統一）
+
+- Node 22（`.nvmrc`）· pnpm 10.13.1（`packageManager`，與 nx-playground 對齊）
+- 生態矩陣：`platform-command/docs/dev-environment.md` · Cowork sandbox 限制：`platform-command/docs/cowork-sandbox.md`

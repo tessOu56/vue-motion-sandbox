@@ -2,6 +2,10 @@
   "name": "vue-motion-sandbox",
   "version": "0.1.0",
   "private": false,
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=22"
+  },
   "description": "A Vue 3 sandbox for experimenting with motion effects, animations, and interactive web experiences using modern libraries like GSAP, Three.js, Lottie, and more",
   "keywords": [
     "vue3",
