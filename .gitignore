@@ -25,3 +25,6 @@ lerna-debug.log*
 
 # OS generated files
 Thumbs.db
+
+# Platform tickets — never commit distributed inbox
+docs/platform-inbox/

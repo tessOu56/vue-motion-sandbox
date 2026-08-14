@@ -2,13 +2,15 @@
 
 ## Purpose
 
-Vue 3 motion **mirror** sandbox. Experiments live in **nx-playground** `apps/vue-motion`.  
-**Central plan**：`platform-command/planning/projects/vue-motion-sandbox.md`
+Vue 3 motion **mirror** sandbox. Experiments live in **nx-playground** `apps/vue-motion`.
+
+**Tickets are not tracked in this repo.**
 
 ## Before coding
 
-1. Prefer working in `C:\Users\11412616t\nx-playground\apps\vue-motion` instead of this repo.
+1. Prefer working in **nx-playground** `apps/vue-motion` instead of this repo.
 2. This repo is for standalone `pnpm serve` preview and sync from nx hub only.
+3. Read [`docs/PROJECT-PLAN.md`](docs/PROJECT-PLAN.md) for mirror rules.
 
 ## Quick start
 
@@ -21,6 +23,7 @@ pnpm run serve   # dev server
 
 - New features or effects in this repo (use nx-playground)
 - Independent deploy
+- Committing `docs/platform-inbox/` (gitignored local-only path)
 
 ## Integration
 
@@ -30,4 +33,3 @@ pnpm run serve   # dev server
 ## 開發環境（2026-07 統一）
 
 - Node 22（`.nvmrc`）· pnpm 10.13.1（`packageManager`，與 nx-playground 對齊）
-- 生態矩陣：`platform-command/docs/dev-environment.md` · Cowork sandbox 限制：`platform-command/docs/cowork-sandbox.md`
