@@ -70,6 +70,7 @@ export default {
       { path: "/lottie", name: "Lottie 動畫" },
       { path: "/motion", name: "Motion 動畫" },
       { path: "/interactive", name: "互動特效" },
+      { path: "/recipes", name: "食譜 Gallery" },
     ])
 
     return {

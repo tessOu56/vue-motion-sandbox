@@ -37,10 +37,15 @@ const routes = [
     name: "Interactive",
     component: () => import("../views/effects/Interactive.vue"),
   },
+  {
+    path: "/recipes",
+    name: "RecipeGallery",
+    component: () => import("../views/RecipeGallery.vue"),
+  },
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 

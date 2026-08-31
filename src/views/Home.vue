@@ -150,6 +150,14 @@ export default {
         path: "/interactive",
         tech: ["Events", "Physics", "Interaction"],
       },
+      {
+        id: 7,
+        title: "食譜／原物料",
+        description: "Mock JSON gallery（T-284）— 不是活動站或 dishes REST",
+        icon: "🥣",
+        path: "/recipes",
+        tech: ["mock JSON", "gallery", "labelled demo"],
+      },
     ])
 
     const navigateToEffect = path => {

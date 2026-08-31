@@ -19,8 +19,10 @@ A Vue 3 sandbox for experimenting with motion effects, animations, and interacti
 
 ## 🚀 Technologies Used
 
+- **Vite** - Dev server and production bundler
 - **Vue 3** - Progressive JavaScript framework with Composition API
 - **Vue Router 4** - Official router for Vue.js
+- **Vitest** - Unit smoke tests
 - **Tailwind CSS** - Utility-first CSS framework
 - **GSAP** - Professional-grade animation library
 - **Three.js** - 3D graphics library
@@ -44,15 +46,20 @@ pnpm install
 ## 🛠️ Development
 
 ```bash
-# Start development server
-pnpm run serve
+# Start Vite dev server
+pnpm run dev
 
-# Build for production
+# Build for production (GitHub Pages base /vue-motion-sandbox/)
 pnpm run build
 
-# Lint and fix files
+# Unit smoke tests
+pnpm test
+
+# Lint
 pnpm run lint
 ```
+
+Recipe / materials gallery (mock JSON): `/recipes` → https://tessou56.github.io/vue-motion-sandbox/recipes
 
 ## 🎯 Available Effects
 
