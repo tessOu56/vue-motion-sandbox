@@ -2,11 +2,23 @@
 
 [![CI & Pages](https://github.com/tessOu56/vue-motion-sandbox/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/tessOu56/vue-motion-sandbox/actions/workflows/deploy-pages.yml)
 
-**🔗 Live Demo: <https://tessou56.github.io/vue-motion-sandbox/>**
+**Live labelled demo:** <https://tessou56.github.io/vue-motion-sandbox/>  
+**Recipes (mock JSON):** <https://tessou56.github.io/vue-motion-sandbox/recipes>
 
-A Vue 3 sandbox for experimenting with motion effects, animations, and interactive web experiences. This project provides a playground for testing various animation techniques, 3D graphics, and interactive elements using modern libraries and frameworks.
+Vue 3 motion lab — GSAP, Three.js, Lottie, VueUse Motion — published on GitHub Pages. This is a **labelled sandbox**, not a product.
 
-> **Relationship to nx-playground**: this repo shares its source with `apps/vue-motion` in the [`nx-playground`](https://github.com/tessOu56/nx-playground) monorepo — this standalone copy exists for independent GitHub Pages deployment. When reviewing the portfolio, treat the monorepo as the primary source.
+## What this proves
+
+| Proof | Honest bound |
+|-------|----------------|
+| **Hosted Vue motion** | Pages demo is real. Effects run in the browser (GSAP / Three / Lottie / VueUse Motion). |
+| **Recipes gallery** | `/recipes` is **mock JSON**, not a shop or CMS. |
+| **Not claimed** | Not a production app. Not the event-stack C-end (that is [nx-playground](https://github.com/tessOu56/nx-playground) event-portal). |
+
+**Relationship:** standalone extract of `apps/vue-motion` in [`nx-playground`](https://github.com/tessOu56/nx-playground) so GitHub Pages can deploy independently. Recruiter view: Vue motion skill slice.
+
+**GitHub About:** `Vue 3 motion lab (GSAP / Three / Lottie) on GitHub Pages. Labelled sandbox — mock recipes, not a product.`  
+**Topics:** `vue` · `gsap` · `threejs` · `lottie` · `vite` · `animation`
 
 ## ✨ Features
 
