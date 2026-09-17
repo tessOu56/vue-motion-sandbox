@@ -6,7 +6,7 @@
 
 A Vue 3 sandbox for experimenting with motion effects, animations, and interactive web experiences. This project provides a playground for testing various animation techniques, 3D graphics, and interactive elements using modern libraries and frameworks.
 
-> **Relationship to nx-playground**: this repo shares its source with `apps/vue-motion` in the [`nx-playground`](https://github.com/tessOu56/nx-playground) monorepo — this standalone copy exists for independent GitHub Pages deployment. When reviewing the portfolio, treat the monorepo as the primary source.
+> **Canonical Vue slice.** This repo is the Vue 3 lab (motion + `/vue-basics`). It is **not** a second event-portal. nx `apps/vue-motion` is leftover until mirror inversion — do not double-write.
 
 ## ✨ Features
 
@@ -59,7 +59,11 @@ pnpm test
 pnpm run lint
 ```
 
-Recipe / materials gallery (mock JSON): `/recipes` → https://tessou56.github.io/vue-motion-sandbox/recipes
+Public Pages routes:
+
+- Effects page: `/particles` → https://tessou56.github.io/vue-motion-sandbox/particles
+- Vue basics lab: `/vue-basics` → https://tessou56.github.io/vue-motion-sandbox/vue-basics
+- Recipe / materials gallery (mock JSON): `/recipes` → https://tessou56.github.io/vue-motion-sandbox/recipes
 
 ## 🎯 Available Effects
 

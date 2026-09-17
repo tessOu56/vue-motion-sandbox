@@ -18,10 +18,19 @@ describe("recipes mock catalog (T-2026-290)", () => {
   })
 })
 
-describe("router (T-2026-290)", () => {
-  it("registers /recipes gallery route", () => {
+describe("router completeness (T-2026-225)", () => {
+  it("registers effects page, vue-basics lab, and recipes", () => {
     const paths = router.getRoutes().map(r => r.path)
-    expect(paths).toContain("/recipes")
     expect(paths).toContain("/")
+    expect(paths).toContain("/particles")
+    expect(paths).toContain("/vue-basics")
+    expect(paths).toContain("/recipes")
+  })
+
+  it("does not register an event-portal surface", () => {
+    const paths = router.getRoutes().map(r => r.path)
+    expect(paths.some(p => p.includes("event"))).toBe(false)
+    expect(paths).not.toContain("/events")
+    expect(paths).not.toContain("/checkout")
   })
 })
