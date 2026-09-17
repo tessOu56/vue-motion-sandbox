@@ -33,7 +33,7 @@ jobs:
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
-      # SPA fallback handled in scripts/postbuild-pages.mjs (404.html + recipes/index.html)
+      # SPA fallback: scripts/postbuild-pages.mjs (404.html + recipes/vue-basics/particles)
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         if: github.ref == 'refs/heads/master'
         with:

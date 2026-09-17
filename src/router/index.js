@@ -42,6 +42,11 @@ const routes = [
     name: "RecipeGallery",
     component: () => import("../views/RecipeGallery.vue"),
   },
+  {
+    path: "/vue-basics",
+    name: "VueBasics",
+    component: () => import("../views/learn/VueBasics.vue"),
+  },
 ]
 
 const router = createRouter({

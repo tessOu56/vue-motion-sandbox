@@ -15,7 +15,7 @@ Vue 3 motion lab — GSAP, Three.js, Lottie, VueUse Motion — published on GitH
 | **Recipes gallery** | `/recipes` is **mock JSON**, not a shop or CMS. |
 | **Not claimed** | Not a production app. Not the event-stack C-end (that is [nx-playground](https://github.com/tessOu56/nx-playground) event-portal). |
 
-**Relationship:** standalone extract of `apps/vue-motion` in [`nx-playground`](https://github.com/tessOu56/nx-playground) so GitHub Pages can deploy independently. Recruiter view: Vue motion skill slice.
+> **Canonical Vue slice.** This repo is the Vue 3 lab (motion + `/vue-basics`). It is **not** a second event-portal. nx `apps/vue-motion` is leftover until mirror inversion — do not double-write.
 
 **GitHub About:** `Vue 3 motion lab (GSAP / Three / Lottie) on GitHub Pages. Labelled sandbox — mock recipes, not a product.`  
 **Topics:** `vue` · `gsap` · `threejs` · `lottie` · `vite` · `animation`
@@ -71,7 +71,11 @@ pnpm test
 pnpm run lint
 ```
 
-Recipe / materials gallery (mock JSON): `/recipes` → https://tessou56.github.io/vue-motion-sandbox/recipes
+Public Pages routes:
+
+- Effects page: `/particles` → https://tessou56.github.io/vue-motion-sandbox/particles
+- Vue basics lab: `/vue-basics` → https://tessou56.github.io/vue-motion-sandbox/vue-basics
+- Recipe / materials gallery (mock JSON): `/recipes` → https://tessou56.github.io/vue-motion-sandbox/recipes
 
 ## 🎯 Available Effects
 
