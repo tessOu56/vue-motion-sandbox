@@ -47,7 +47,7 @@
     "pinia": "^3.0.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.5.2",
     "eslint": "^8.57.1",
