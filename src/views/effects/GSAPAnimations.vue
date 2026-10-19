@@ -143,12 +143,17 @@ export default {
         })
       }
 
-      // 文字動畫
+      // 文字動畫 — wrap via DOM (avoid innerHTML even for static copy)
       if (textAnimation.value) {
         const chars = textAnimation.value.textContent.split("")
-        textAnimation.value.innerHTML = chars
-          .map(char => `<span style="display: inline-block;">${char}</span>`)
-          .join("")
+        textAnimation.value.replaceChildren(
+          ...chars.map(char => {
+            const span = document.createElement("span")
+            span.style.display = "inline-block"
+            span.textContent = char
+            return span
+          })
+        )
 
         gsap.fromTo(
           textAnimation.value.children,
