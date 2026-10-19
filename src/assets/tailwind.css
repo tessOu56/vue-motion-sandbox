@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.cjs";
 
 /* 自定義組件樣式 */
 @layer components {
@@ -56,5 +55,12 @@
     to {
       box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-glow {
+    animation: none !important;
   }
 }
