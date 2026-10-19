@@ -81,8 +81,10 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from "vue"
+import { ref, onMounted, onUnmounted, watch } from "vue"
 import lottie from "lottie-web"
+
+import { usePrefersReducedMotion } from "../../composables/usePrefersReducedMotion.js"
 
 export default {
   name: "LottieEffect",
@@ -94,6 +96,7 @@ export default {
 
     const isPlaying = ref(false)
     const currentSpeed = ref(1)
+    const prefersReducedMotion = usePrefersReducedMotion()
 
     let loadingAnimation = null
     let successAnimation = null
@@ -419,19 +422,43 @@ export default {
       }
     }
 
+    const freezeAtEnd = anim => {
+      if (!anim) return
+      const stop = () => {
+        const lastFrame = Math.max(0, anim.totalFrames - 1)
+        anim.goToAndStop(lastFrame, true)
+      }
+      if (anim.isLoaded) {
+        stop()
+        return
+      }
+      anim.addEventListener("DOMLoaded", stop)
+    }
+
+    const destroyAnimations = () => {
+      if (loadingAnimation) loadingAnimation.destroy()
+      if (successAnimation) successAnimation.destroy()
+      if (errorAnimation) errorAnimation.destroy()
+      if (customAnimation) customAnimation.destroy()
+      loadingAnimation = null
+      successAnimation = null
+      errorAnimation = null
+      customAnimation = null
+    }
+
     const initAnimations = () => {
-      // 載入動畫
+      const reduceMotion = prefersReducedMotion.value
+
       if (loadingContainer.value) {
         loadingAnimation = lottie.loadAnimation({
           container: loadingContainer.value,
           renderer: "svg",
-          loop: true,
-          autoplay: true,
+          loop: !reduceMotion,
+          autoplay: !reduceMotion,
           animationData: createLoadingAnimation(),
         })
       }
 
-      // 成功動畫
       if (successContainer.value) {
         successAnimation = lottie.loadAnimation({
           container: successContainer.value,
@@ -442,7 +469,6 @@ export default {
         })
       }
 
-      // 錯誤動畫
       if (errorContainer.value) {
         errorAnimation = lottie.loadAnimation({
           container: errorContainer.value,
@@ -453,18 +479,25 @@ export default {
         })
       }
 
-      // 自定義動畫 (使用載入動畫作為範例)
       if (customContainer.value) {
         customAnimation = lottie.loadAnimation({
           container: customContainer.value,
           renderer: "svg",
-          loop: true,
-          autoplay: true,
+          loop: !reduceMotion,
+          autoplay: !reduceMotion,
           animationData: createLoadingAnimation(),
         })
       }
 
-      isPlaying.value = true
+      if (reduceMotion) {
+        freezeAtEnd(loadingAnimation)
+        freezeAtEnd(successAnimation)
+        freezeAtEnd(errorAnimation)
+        freezeAtEnd(customAnimation)
+        isPlaying.value = false
+      } else {
+        isPlaying.value = true
+      }
     }
 
     const playAnimation = () => {
@@ -504,11 +537,13 @@ export default {
       initAnimations()
     })
 
+    watch(prefersReducedMotion, () => {
+      destroyAnimations()
+      initAnimations()
+    })
+
     onUnmounted(() => {
-      if (loadingAnimation) loadingAnimation.destroy()
-      if (successAnimation) successAnimation.destroy()
-      if (errorAnimation) errorAnimation.destroy()
-      if (customAnimation) customAnimation.destroy()
+      destroyAnimations()
     })
 
     return {

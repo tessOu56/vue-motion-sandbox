@@ -28,6 +28,7 @@ Vue 3 motion lab — GSAP, Three.js, Lottie, VueUse Motion — published on GitH
 - **Lottie Animations**: After Effects animations rendered in the browser
 - **VueUse Motion**: Declarative animations with VueUse Motion
 - **Interactive Effects**: Mouse follow, ripple effects, hover animations, and touch gestures
+- **Reduced motion**: Effect demos honor the OS `prefers-reduced-motion` setting (see a11y note below)
 
 ## 🚀 Technologies Used
 
@@ -127,6 +128,18 @@ The project uses Tailwind CSS for styling, making it easy to customize:
 - Modify colors in `tailwind.config.js`
 - Add custom animations in `src/assets/tailwind.css`
 - Create new effect components in `src/views/effects/`
+
+## ♿ Reduced motion (a11y note)
+
+This sandbox is **not a WCAG audit**. It does read `prefers-reduced-motion` through a shared `usePrefersReducedMotion` composable (and matching CSS media queries) so looping / autoplay motion can be turned off:
+
+- **Particles / Three.js**: the render loop does not auto-start; a static frame is drawn. Playback controls still work if you opt in.
+- **GSAP**: infinite tweens and SVG `animateMotion` loops are skipped; boxes sit at a settled pose. The user-triggered timeline still plays.
+- **Lottie**: no autoplay or looping; animations freeze on the last frame. Play / pause remain available.
+- **VueUse Motion**: enter durations collapse to `0` and the infinite path tween is not started.
+- **CSS**: page fade, home `fadeIn`, and decorative keyframes are disabled.
+
+Turn the OS setting off and reload (or keep the tab open) to restore motion.
 
 ## 📱 Responsive Design
 

@@ -54,4 +54,13 @@ body {
 .slide-leave-to {
   transform: translateX(-100%);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter-active,
+  .fade-leave-active,
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: none;
+  }
+}
 </style>

@@ -197,4 +197,10 @@ export default {
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+  }
+}
 </style>

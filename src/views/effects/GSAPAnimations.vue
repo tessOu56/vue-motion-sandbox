@@ -63,8 +63,18 @@
               stroke-width="2"
               fill="none"
             />
-            <circle ref="pathCircle" r="8" fill="#667eea">
-              <animateMotion dur="3s" repeatCount="indefinite">
+            <circle
+              ref="pathCircle"
+              r="8"
+              fill="#667eea"
+              :cx="prefersReducedMotion ? 350 : 50"
+              cy="100"
+            >
+              <animateMotion
+                v-if="!prefersReducedMotion"
+                dur="3s"
+                repeatCount="indefinite"
+              >
                 <mpath :href="'#motionPath'" />
               </animateMotion>
             </circle>
@@ -98,8 +108,10 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from "vue"
+import { ref, onMounted, onUnmounted, watch } from "vue"
 import { gsap } from "gsap"
+
+import { usePrefersReducedMotion } from "../../composables/usePrefersReducedMotion.js"
 
 export default {
   name: "GSAPAnimationsEffect",
@@ -112,61 +124,77 @@ export default {
     const textAnimation = ref(null)
     const pathCircle = ref(null)
     const motionPath = ref(null)
+    const prefersReducedMotion = usePrefersReducedMotion()
 
     const isPlaying = ref(false)
     let masterTimeline = null
+    let textPrepared = false
+
+    const prepareText = () => {
+      if (!textAnimation.value || textPrepared) return
+      const chars = textAnimation.value.textContent.split("")
+      textAnimation.value.innerHTML = chars
+        .map(char => `<span style="display: inline-block;">${char}</span>`)
+        .join("")
+      textPrepared = true
+    }
 
     const initAnimations = () => {
-      // 基本動畫
+      const reduceMotion = prefersReducedMotion.value
+
       if (basicBox.value) {
-        gsap.set(basicBox.value, { x: 0, y: 0, rotation: 0 })
-        gsap.to(basicBox.value, {
-          x: 200,
-          y: 50,
-          rotation: 360,
-          duration: 2,
-          ease: "power2.inOut",
-          repeat: -1,
-          yoyo: true,
+        gsap.set(basicBox.value, {
+          x: reduceMotion ? 200 : 0,
+          y: reduceMotion ? 50 : 0,
+          rotation: 0,
         })
+        if (!reduceMotion) {
+          gsap.to(basicBox.value, {
+            x: 200,
+            y: 50,
+            rotation: 360,
+            duration: 2,
+            ease: "power2.inOut",
+            repeat: -1,
+            yoyo: true,
+          })
+        }
       }
 
-      // 彈性動畫
       if (elasticBox.value) {
         gsap.set(elasticBox.value, { scale: 1 })
-        gsap.to(elasticBox.value, {
-          scale: 1.5,
-          duration: 1,
-          ease: "elastic.out(1, 0.3)",
-          repeat: -1,
-          yoyo: true,
-        })
-      }
-
-      // 文字動畫
-      if (textAnimation.value) {
-        const chars = textAnimation.value.textContent.split("")
-        textAnimation.value.innerHTML = chars
-          .map(char => `<span style="display: inline-block;">${char}</span>`)
-          .join("")
-
-        gsap.fromTo(
-          textAnimation.value.children,
-          { y: 50, opacity: 0, rotation: 10 },
-          {
-            y: 0,
-            opacity: 1,
-            rotation: 0,
-            duration: 0.8,
-            ease: "back.out(1.7)",
-            stagger: 0.1,
+        if (!reduceMotion) {
+          gsap.to(elasticBox.value, {
+            scale: 1.5,
+            duration: 1,
+            ease: "elastic.out(1, 0.3)",
             repeat: -1,
-            repeatDelay: 2,
-          }
-        )
+            yoyo: true,
+          })
+        }
       }
 
-      // 主時間軸
+      if (textAnimation.value) {
+        prepareText()
+        gsap.set(textAnimation.value.children, { y: 0, opacity: 1, rotation: 0 })
+        if (!reduceMotion) {
+          gsap.fromTo(
+            textAnimation.value.children,
+            { y: 50, opacity: 0, rotation: 10 },
+            {
+              y: 0,
+              opacity: 1,
+              rotation: 0,
+              duration: 0.8,
+              ease: "back.out(1.7)",
+              stagger: 0.1,
+              repeat: -1,
+              repeatDelay: 2,
+            }
+          )
+        }
+      }
+
       masterTimeline = gsap.timeline({ paused: true })
 
       if (timelineBox1.value && timelineBox2.value && timelineBox3.value) {
@@ -237,15 +265,26 @@ export default {
       }
     }
 
+    const teardownAnimations = () => {
+      if (masterTimeline) {
+        masterTimeline.kill()
+        masterTimeline = null
+      }
+      gsap.killTweensOf("*")
+      isPlaying.value = false
+    }
+
     onMounted(() => {
       initAnimations()
     })
 
+    watch(prefersReducedMotion, () => {
+      teardownAnimations()
+      initAnimations()
+    })
+
     onUnmounted(() => {
-      if (masterTimeline) {
-        masterTimeline.kill()
-      }
-      gsap.killTweensOf("*")
+      teardownAnimations()
     })
 
     return {
@@ -257,6 +296,7 @@ export default {
       textAnimation,
       pathCircle,
       motionPath,
+      prefersReducedMotion,
       isPlaying,
       playTimeline,
       pauseTimeline,

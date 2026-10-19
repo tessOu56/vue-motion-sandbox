@@ -97,4 +97,17 @@ export default {
   opacity: 0;
   transform: translateY(-20px);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: none;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 1;
+    transform: none;
+  }
+}
 </style>
