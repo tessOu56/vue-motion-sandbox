@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
+
+import { pageTitle } from "../data/demos.js"
 import Home from "../views/Home.vue"
 
 const routes = [
@@ -47,11 +49,32 @@ const routes = [
     name: "VueBasics",
     component: () => import("../views/learn/VueBasics.vue"),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("../views/NotFound.vue"),
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+    const reduce =
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const behavior = reduce ? "auto" : "smooth"
+    if (to.hash) {
+      return { el: to.hash, top: 72, behavior }
+    }
+    return { top: 0 }
+  },
+})
+
+router.afterEach(to => {
+  document.title = pageTitle(to.name, to.path)
 })
 
 export default router

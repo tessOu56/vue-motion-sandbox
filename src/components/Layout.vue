@@ -1,100 +1,210 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <router-link to="/" class="flex items-center">
-            <h2 class="text-white text-xl font-bold">Vue3 特效展示</h2>
-          </router-link>
-          <div class="hidden md:flex space-x-8">
-            <router-link
-              v-for="item in menuItems"
-              :key="item.path"
-              :to="item.path"
-              class="text-white/80 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              active-class="text-white bg-white/20"
-            >
-              {{ item.name }}
-            </router-link>
-          </div>
-          <!-- 移動端菜單 -->
-          <div class="md:hidden">
-            <button class="text-white hover:text-white/80">
-              <svg
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
+  <div class="app-shell">
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <main class="flex-1 p-4 max-w-7xl mx-auto w-full">
-      <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
-        </transition>
+    <header class="site-header">
+      <div class="header-inner">
+        <router-link class="brand" to="/" :title="SITE.name">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">{{ SITE.name }}</span>
+        </router-link>
+
+        <nav class="nav-desktop" aria-label="Primary">
+          <router-link to="/" exact-active-class="is-current">Home</router-link>
+          <router-link
+            :to="{ path: '/', hash: '#demos' }"
+            active-class=""
+            exact-active-class=""
+          >
+            Demos
+          </router-link>
+          <router-link to="/vue-basics">Lab</router-link>
+          <router-link to="/recipes">Recipes</router-link>
+          <a :href="SITE.github" rel="noopener noreferrer">Source</a>
+        </nav>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          :aria-expanded="menuOpen ? 'true' : 'false'"
+          aria-controls="mobile-menu"
+          :aria-label="menuOpen ? 'Close menu' : 'Open menu'"
+          @click="menuOpen = !menuOpen"
+        >
+          <span class="menu-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
+
+      <div v-if="menuOpen" id="mobile-menu" class="nav-mobile">
+        <nav aria-label="Primary">
+          <router-link to="/" @click="closeMenu">Home</router-link>
+          <router-link
+            :to="{ path: '/', hash: '#demos' }"
+            active-class=""
+            exact-active-class=""
+            @click="closeMenu"
+          >
+            Demos
+          </router-link>
+          <router-link to="/vue-basics" @click="closeMenu">Lab</router-link>
+          <router-link to="/recipes" @click="closeMenu">Recipes</router-link>
+          <a :href="SITE.github" rel="noopener noreferrer" @click="closeMenu">
+            Source
+          </a>
+        </nav>
+        <p class="nav-mobile-label" id="mobile-demo-label">All demos</p>
+        <nav aria-labelledby="mobile-demo-label">
+          <router-link
+            v-for="demo in demos"
+            :key="demo.id"
+            :to="demo.path"
+            @click="closeMenu"
+          >
+            {{ demo.nav }}
+            <span class="nav-zh">{{ demo.titleZh }}</span>
+          </router-link>
+        </nav>
+      </div>
+    </header>
+
+    <div v-if="!isHome" class="demo-chrome">
+      <div class="demo-chrome-inner">
+        <router-link class="back-link" :to="{ path: '/', hash: '#demos' }">
+          All demos
+        </router-link>
+        <nav class="demo-strip" aria-label="Demos">
+          <router-link
+            v-for="demo in demos"
+            :key="demo.id"
+            :to="demo.path"
+            class="demo-pill"
+          >
+            {{ demo.nav }}
+          </router-link>
+        </nav>
+        <a
+          v-if="currentDemo"
+          class="source-link"
+          :href="sourceUrl(currentDemo)"
+          rel="noopener noreferrer"
+        >
+          Source
+        </a>
+        <a v-else class="source-link" :href="SITE.github" rel="noopener noreferrer">
+          Source
+        </a>
+      </div>
+    </div>
+
+    <main id="main" class="site-main" tabindex="-1">
+      <StatusPanel
+        v-if="loadError"
+        kicker="Error"
+        title="This demo failed to load"
+        description="The page did not finish loading. Retry, go back to the gallery, or open the source."
+        role="alert"
+        live="assertive"
+      >
+        <button class="btn-primary" type="button" @click="retryLoad">
+          Try again
+        </button>
+        <router-link class="btn-ghost" :to="{ path: '/', hash: '#demos' }">
+          All demos
+        </router-link>
+        <a
+          v-if="currentDemo"
+          class="btn-ghost"
+          :href="sourceUrl(currentDemo)"
+          rel="noopener noreferrer"
+        >
+          Source
+        </a>
+      </StatusPanel>
+
+      <router-view v-else v-slot="{ Component }">
+        <Suspense>
+          <template #default>
+            <transition name="fade" mode="out-in">
+              <component :is="Component" :key="viewKey" />
+            </transition>
+          </template>
+          <template #fallback>
+            <StatusPanel
+              heading="h2"
+              title="Loading demo"
+              description="Fetching the page bundle."
+            />
+          </template>
+        </Suspense>
       </router-view>
     </main>
 
-    <footer class="bg-gray-800 text-white text-center py-4">
-      <p class="opacity-80">
-        Vue 3 Web 特效專案 - 使用 Vue 3 + Vue Router + GSAP + Three.js + Lottie
-        + Tailwind CSS
+    <footer class="site-footer">
+      <p>
+        Labelled Vue 3 sandbox — not a product.
+        <a :href="SITE.github" rel="noopener noreferrer">Source on GitHub</a>
       </p>
     </footer>
   </div>
 </template>
 
-<script>
-import { ref } from "vue"
+<script setup>
+import { computed, onErrorCaptured, onMounted, onUnmounted, ref, watch } from "vue"
+import { useRoute } from "vue-router"
 
-export default {
-  name: "AppLayout",
-  setup() {
-    const menuItems = ref([
-      { path: "/", name: "首頁" },
-      { path: "/vue-basics", name: "Vue 基礎" },
-      { path: "/particles", name: "粒子特效" },
-      { path: "/gsap-animations", name: "GSAP 動畫" },
-      { path: "/three-js", name: "Three.js 3D" },
-      { path: "/lottie", name: "Lottie 動畫" },
-      { path: "/motion", name: "Motion 動畫" },
-      { path: "/interactive", name: "互動特效" },
-      { path: "/recipes", name: "食譜 Gallery" },
-    ])
+defineOptions({ name: "AppLayout" })
 
-    return {
-      menuItems,
-    }
-  },
+import StatusPanel from "./StatusPanel.vue"
+import { SITE, demos, demoByPath, sourceUrl } from "../data/demos.js"
+
+const route = useRoute()
+const menuOpen = ref(false)
+const loadError = ref(null)
+const retryNonce = ref(0)
+
+const currentDemo = computed(() => demoByPath(route.path))
+const isHome = computed(() => route.name === "Home")
+const viewKey = computed(() => `${route.fullPath}::${retryNonce.value}`)
+
+const closeMenu = () => {
+  menuOpen.value = false
 }
+
+const retryLoad = () => {
+  loadError.value = null
+  retryNonce.value += 1
+}
+
+watch(
+  () => route.fullPath,
+  () => {
+    closeMenu()
+    loadError.value = null
+  }
+)
+
+watch(menuOpen, open => {
+  document.body.style.overflow = open ? "hidden" : ""
+})
+
+onErrorCaptured(error => {
+  loadError.value = error
+  return false
+})
+
+const onKeydown = event => {
+  if (event.key === "Escape") closeMenu()
+}
+
+onMounted(() => {
+  window.addEventListener("keydown", onKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener("keydown", onKeydown)
+  document.body.style.overflow = ""
+})
 </script>
-
-<style scoped>
-/* 頁面過渡動畫 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.3s ease;
-}
-
-.fade-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-</style>

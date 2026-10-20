@@ -1,200 +1,80 @@
 <template>
-  <div class="space-y-12">
-    <!-- Hero Section -->
-    <div class="gradient-bg rounded-3xl p-12 text-center text-white">
-      <h1 class="text-5xl font-bold mb-6 animate-fade-in">
-        <span class="text-gradient">Vue 3 Web 特效展示</span>
-      </h1>
-      <p class="text-xl opacity-90 max-w-2xl mx-auto leading-relaxed">
-        探索各種令人驚豔的 Web 特效，使用 Vue 3 生態系打造互動體驗
+  <div class="home">
+    <section class="hero" aria-labelledby="home-title">
+      <p class="kicker">Labelled sandbox</p>
+      <h1 id="home-title">{{ SITE.name }}</h1>
+      <span class="hero-rule" aria-hidden="true"></span>
+      <p class="hero-lead">
+        Vue 3 lab for GSAP, Three.js, Lottie, and VueUse Motion. Hosted on
+        GitHub Pages. This is a labelled sandbox, not a product.
       </p>
-    </div>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#demos">Browse demos</a>
+        <a class="btn-ghost" :href="SITE.github" rel="noopener noreferrer">
+          View source
+        </a>
+      </div>
+    </section>
 
-    <!-- Effects Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div
-        v-for="effect in effects"
-        :key="effect.id"
-        class="card hover:scale-105 cursor-pointer group"
-        @click="navigateToEffect(effect.path)"
-      >
-        <div class="text-center mb-6">
-          <span class="text-6xl group-hover:animate-bounce">{{
-            effect.icon
-          }}</span>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">
-          {{ effect.title }}
-        </h3>
-        <p class="text-gray-600 mb-6 text-center leading-relaxed">
-          {{ effect.description }}
+    <section class="home-points" aria-label="What this repo contains">
+      <article>
+        <h2>Motion demos</h2>
+        <p>
+          Open a page, use the controls, then jump to the source file for that
+          demo.
         </p>
-        <div class="flex flex-wrap gap-2 justify-center">
-          <span
-            v-for="tech in effect.tech"
-            :key="tech"
-            class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-medium"
-          >
-            {{ tech }}
-          </span>
-        </div>
-      </div>
-    </div>
+      </article>
+      <article>
+        <h2>Vue 3 lab</h2>
+        <p>
+          Composition API, component communication, composables, and Pinia —
+          a labelled learning surface, not an app.
+        </p>
+      </article>
+      <article>
+        <h2>Mock recipes</h2>
+        <p>
+          Static JSON gallery. Not a shop, CMS, or dishes API.
+        </p>
+      </article>
+    </section>
 
-    <!-- Features Section -->
-    <div class="card">
-      <h2 class="text-4xl font-bold text-center mb-12 text-gradient">
-        技術特色
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div
-          class="text-center p-6 rounded-xl bg-gradient-to-br from-indigo-50 to-pink-50 hover:shadow-lg transition-shadow"
-        >
-          <h3 class="text-xl font-semibold mb-3 text-gray-800">🎨 豐富動畫</h3>
-          <p class="text-gray-600">使用 GSAP、VueUse Motion 等庫創建流暢動畫</p>
-        </div>
-        <div
-          class="text-center p-6 rounded-xl bg-gradient-to-br from-pink-50 to-indigo-50 hover:shadow-lg transition-shadow"
-        >
-          <h3 class="text-xl font-semibold mb-3 text-gray-800">🎯 3D 效果</h3>
-          <p class="text-gray-600">Three.js 實現的 3D 場景和互動</p>
-        </div>
-        <div
-          class="text-center p-6 rounded-xl bg-gradient-to-br from-indigo-50 to-pink-50 hover:shadow-lg transition-shadow"
-        >
-          <h3 class="text-xl font-semibold mb-3 text-gray-800">✨ 粒子系統</h3>
-          <p class="text-gray-600">Canvas 和 WebGL 粒子特效</p>
-        </div>
-        <div
-          class="text-center p-6 rounded-xl bg-gradient-to-br from-pink-50 to-indigo-50 hover:shadow-lg transition-shadow"
-        >
-          <h3 class="text-xl font-semibold mb-3 text-gray-800">
-            🎬 Lottie 動畫
-          </h3>
-          <p class="text-gray-600">After Effects 導出的動畫效果</p>
-        </div>
-        <div
-          class="text-center p-6 rounded-xl bg-gradient-to-br from-indigo-50 to-pink-50 hover:shadow-lg transition-shadow"
-        >
-          <h3 class="text-xl font-semibold mb-3 text-gray-800">🖱️ 互動體驗</h3>
-          <p class="text-gray-600">滑鼠和觸控互動特效</p>
-        </div>
-        <div
-          class="text-center p-6 rounded-xl bg-gradient-to-br from-pink-50 to-indigo-50 hover:shadow-lg transition-shadow"
-        >
-          <h3 class="text-xl font-semibold mb-3 text-gray-800">
-            📱 響應式設計
-          </h3>
-          <p class="text-gray-600">適配各種裝置尺寸</p>
-        </div>
-      </div>
-    </div>
+    <section id="demos" class="demo-index" aria-labelledby="demos-heading">
+      <header class="section-head">
+        <p class="kicker">Gallery</p>
+        <h2 id="demos-heading">Demos</h2>
+        <p>
+          Every card is a real route. Each demo page links back here and to
+          its source file.
+        </p>
+      </header>
+
+      <ul class="demo-grid">
+        <li v-for="(demo, index) in demos" :key="demo.id">
+          <router-link class="demo-card" :to="demo.path">
+            <span class="demo-card-meta">
+              <span class="demo-index">{{ String(index + 1).padStart(2, "0") }}</span>
+              <span class="demo-kind">{{ kindLabel(demo.kind) }}</span>
+            </span>
+            <h3>{{ demo.title }}</h3>
+            <p class="demo-zh">{{ demo.titleZh }}</p>
+            <p class="demo-blurb">{{ demo.blurb }}</p>
+            <p class="demo-tech">{{ demo.tech.join(" · ") }}</p>
+          </router-link>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
-<script>
-import { ref } from "vue"
-import { useRouter } from "vue-router"
+<script setup>
+import { SITE, demos } from "../data/demos.js"
 
-export default {
-  name: "HomePage",
-  setup() {
-    const router = useRouter()
+defineOptions({ name: "HomePage" })
 
-    const effects = ref([
-      {
-        id: 0,
-        title: "Vue 3 基礎實驗室",
-        description:
-          "Composition API、元件通訊、Composables、Pinia — 打好基礎再玩動畫",
-        icon: "📚",
-        path: "/vue-basics",
-        tech: ["Composition API", "Pinia", "Composables"],
-      },
-      {
-        id: 1,
-        title: "粒子特效",
-        description: "使用 Canvas 和 WebGL 創建的粒子系統，支援滑鼠互動",
-        icon: "✨",
-        path: "/particles",
-        tech: ["Canvas", "WebGL", "Vue 3"],
-      },
-      {
-        id: 2,
-        title: "GSAP 動畫",
-        description: "專業級動畫庫，創建複雜的時間軸動畫效果",
-        icon: "🎬",
-        path: "/gsap-animations",
-        tech: ["GSAP", "Timeline", "Easing"],
-      },
-      {
-        id: 3,
-        title: "Three.js 3D",
-        description: "3D 場景渲染，包含模型、光照和材質效果",
-        icon: "🎯",
-        path: "/three-js",
-        tech: ["Three.js", "WebGL", "3D"],
-      },
-      {
-        id: 4,
-        title: "Lottie 動畫",
-        description: "After Effects 導出的 JSON 動畫，輕量且流暢",
-        icon: "🎨",
-        path: "/lottie",
-        tech: ["Lottie", "After Effects", "JSON"],
-      },
-      {
-        id: 5,
-        title: "Motion 動畫",
-        description: "VueUse Motion 提供的聲明式動畫系統",
-        icon: "🌊",
-        path: "/motion",
-        tech: ["VueUse", "Motion", "Spring"],
-      },
-      {
-        id: 6,
-        title: "互動特效",
-        description: "滑鼠、觸控和鍵盤互動的動態效果",
-        icon: "🖱️",
-        path: "/interactive",
-        tech: ["Events", "Physics", "Interaction"],
-      },
-      {
-        id: 7,
-        title: "食譜／原物料",
-        description: "Mock JSON gallery（T-284）— 不是活動站或 dishes REST",
-        icon: "🥣",
-        path: "/recipes",
-        tech: ["mock JSON", "gallery", "labelled demo"],
-      },
-    ])
-
-    const navigateToEffect = path => {
-      router.push(path)
-    }
-
-    return {
-      effects,
-      navigateToEffect,
-    }
-  },
+const kindLabel = kind => {
+  if (kind === "lab") return "Lab"
+  if (kind === "mock") return "Mock"
+  return "Effect"
 }
 </script>
-
-<style scoped>
-/* 自定義動畫 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out;
-}
-</style>
