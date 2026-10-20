@@ -1,49 +1,35 @@
 <template>
-  <div class="space-y-12">
-    <div class="gradient-bg rounded-3xl p-10 text-center text-white">
-      <p class="mb-3 text-sm font-medium uppercase tracking-wide text-white/80">
-        Labelled mock · T-284
+  <div class="space-y-10">
+    <header class="page-intro">
+      <p class="kicker">Mock JSON · labelled demo</p>
+      <h1>食譜／原物料 Gallery</h1>
+      <p>
+        Static mock catalog in this Vue lab. Not a dishes REST API, not an
+        event site, and not Module Federation.
       </p>
-      <h1 class="mb-4 text-4xl font-bold md:text-5xl">
-        <span class="text-gradient">食譜／原物料 Gallery</span>
-      </h1>
-      <p class="mx-auto max-w-2xl text-lg leading-relaxed text-white/90">
-        Vue lab 靜態 mock JSON 展示。不是 dishes REST、不是活動站、也不是
-        Module Federation。
-      </p>
-    </div>
+    </header>
 
     <section aria-labelledby="recipes-heading">
-      <h2
-        id="recipes-heading"
-        class="mb-6 text-center text-3xl font-bold text-gradient"
-      >
-        Recipes
-      </h2>
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <article
-          v-for="recipe in recipes"
-          :key="recipe.id"
-          class="card hover:scale-105"
-        >
-          <h3 class="mb-2 text-center text-2xl font-bold text-gray-800">
-            {{ recipe.titleZh }}
-          </h3>
-          <p class="mb-1 text-center text-sm text-indigo-600">
-            {{ recipe.title }}
+      <h2 id="recipes-heading" class="section-head-title">Recipes</h2>
+
+      <StatusPanel
+        v-if="!recipes.length"
+        heading="h3"
+        title="No recipes in the mock catalog"
+        description="The labelled JSON file has no recipe entries to show."
+      />
+
+      <div v-else class="recipe-grid">
+        <article v-for="recipe in recipes" :key="recipe.id" class="card">
+          <h3 class="recipe-title">{{ recipe.titleZh }}</h3>
+          <p class="recipe-en">{{ recipe.title }}</p>
+          <p class="recipe-copy">{{ recipe.summaryZh }}</p>
+          <p class="recipe-meta">~{{ recipe.timeMinutes }} min</p>
+          <p v-if="!materialsFor(recipe).length" class="empty-state">
+            No materials linked on this recipe.
           </p>
-          <p class="mb-4 text-center leading-relaxed text-gray-600">
-            {{ recipe.summaryZh }}
-          </p>
-          <p class="mb-4 text-center text-sm text-gray-500">
-            ~{{ recipe.timeMinutes }} min
-          </p>
-          <div class="flex flex-wrap justify-center gap-2">
-            <span
-              v-for="mat in materialsFor(recipe)"
-              :key="mat.id"
-              class="rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700"
-            >
+          <div v-else class="chip-row">
+            <span v-for="mat in materialsFor(recipe)" :key="mat.id" class="chip">
               {{ mat.nameZh }}
             </span>
           </div>
@@ -51,24 +37,16 @@
       </div>
     </section>
 
-    <section aria-labelledby="materials-heading" class="card">
-      <h2
-        id="materials-heading"
-        class="mb-8 text-center text-3xl font-bold text-gradient"
-      >
-        Materials
-      </h2>
-      <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        <div
-          v-for="mat in materials"
-          :key="mat.id"
-          class="rounded-xl bg-gradient-to-br from-indigo-50 to-pink-50 p-4 text-center transition-shadow hover:shadow-lg"
-        >
-          <p class="font-semibold text-gray-800">{{ mat.nameZh }}</p>
-          <p class="text-sm text-gray-500">{{ mat.name }}</p>
-          <p class="mt-1 text-xs uppercase tracking-wide text-indigo-500">
-            {{ mat.kind }}
-          </p>
+    <section aria-labelledby="materials-heading">
+      <h2 id="materials-heading" class="section-head-title">Materials</h2>
+      <p v-if="!materials.length" class="empty-state">
+        No materials in the mock catalog.
+      </p>
+      <div v-else class="material-grid">
+        <div v-for="mat in materials" :key="mat.id" class="card material-card">
+          <p class="font-semibold">{{ mat.nameZh }}</p>
+          <p class="recipe-en">{{ mat.name }}</p>
+          <p class="material-kind">{{ mat.kind }}</p>
         </div>
       </div>
     </section>
@@ -78,21 +56,21 @@
 <script>
 import { computed } from "vue"
 
+import StatusPanel from "../components/StatusPanel.vue"
 import catalog from "../data/recipes.json"
 
 export default {
   name: "RecipeGallery",
+  components: { StatusPanel },
   setup() {
-    const recipes = computed(() => catalog.recipes)
-    const materials = computed(() => catalog.materials)
+    const recipes = computed(() => catalog.recipes || [])
+    const materials = computed(() => catalog.materials || [])
     const byId = computed(() =>
-      Object.fromEntries(catalog.materials.map(m => [m.id, m]))
+      Object.fromEntries(materials.value.map(m => [m.id, m]))
     )
 
     const materialsFor = recipe =>
-      (recipe.materialIds || [])
-        .map(id => byId.value[id])
-        .filter(Boolean)
+      (recipe.materialIds || []).map(id => byId.value[id]).filter(Boolean)
 
     return {
       recipes,
@@ -102,3 +80,75 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.section-head-title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.recipe-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.recipe-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.recipe-en,
+.recipe-meta,
+.material-kind {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.recipe-copy {
+  margin: 0.75rem 0;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+}
+
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.material-card {
+  padding: 1rem;
+}
+
+.material-kind {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  font-weight: 650;
+}
+
+@media (min-width: 768px) {
+  .recipe-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .material-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+</style>

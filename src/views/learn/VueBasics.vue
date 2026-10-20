@@ -1,17 +1,15 @@
 <template>
   <div class="space-y-8">
-    <div class="gradient-bg rounded-3xl p-8 md:p-10 text-white text-center">
-      <p class="mb-3 text-sm font-medium uppercase tracking-wide text-white/80">
-        Labelled lab · T-225 completeness
-      </p>
-      <h1 class="text-4xl font-bold mb-3">📚 Vue 3 基礎實驗室</h1>
-      <p class="text-lg opacity-90 max-w-2xl mx-auto">
+    <header class="page-intro">
+      <p class="kicker">Labelled lab</p>
+      <h1>Vue 3 基礎實驗室</h1>
+      <p>
         從 React 開發者視角出發，用互動範例掌握 Composition API、元件通訊、
         Composables 與 Pinia。完成後再進入動畫特效區會更順。
       </p>
-    </div>
+    </header>
 
-    <nav class="flex flex-wrap gap-2 justify-center" role="tablist" aria-label="Vue basics labs">
+    <nav class="flex flex-wrap gap-2" role="tablist" aria-label="Vue basics labs">
       <button
         v-for="tab in tabs"
         :key="tab.id"
@@ -19,12 +17,8 @@
         role="tab"
         :data-lab-tab="tab.id"
         :aria-selected="activeTab === tab.id"
-        class="px-4 py-2 rounded-full text-sm font-medium transition-colors"
-        :class="
-          activeTab === tab.id
-            ? 'bg-indigo-600 text-white shadow-md'
-            : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-300'
-        "
+        class="tab"
+        :class="{ 'tab-active': activeTab === tab.id }"
         @click="activeTab = tab.id"
       >
         {{ tab.label }}
@@ -33,9 +27,9 @@
 
     <component :is="activeComponent" />
 
-    <div class="card bg-gradient-to-br from-slate-50 to-indigo-50">
-      <h2 class="text-lg font-bold text-gray-800 mb-2">建議學習順序</h2>
-      <ol class="list-decimal list-inside space-y-1 text-sm text-gray-600">
+    <div class="card">
+      <h2 class="text-lg font-bold mb-2">建議學習順序</h2>
+      <ol class="list-decimal list-inside space-y-1 text-sm" style="color: var(--muted)">
         <li>對照表 → 建立 React / Vue 概念映射</li>
         <li>響應式 → ref、reactive、computed、watch</li>
         <li>元件通訊 → props、emits、v-model</li>
@@ -44,9 +38,9 @@
         <li>生命週期 → onMounted、v-if、v-for</li>
         <li>回到首頁，進入 GSAP / Three.js 動畫實驗</li>
       </ol>
-      <p class="mt-3 text-xs text-gray-500">
+      <p class="mt-3 text-xs" style="color: var(--muted)">
         Completeness lab only — not an event site. Effects page:
-        <code class="bg-white px-1 rounded">/particles</code>
+        <code>/particles</code>
       </p>
     </div>
   </div>

@@ -19,12 +19,13 @@ describe("recipes mock catalog (T-2026-290)", () => {
 })
 
 describe("router completeness (T-2026-225)", () => {
-  it("registers effects page, vue-basics lab, and recipes", () => {
+  it("registers effects page, vue-basics lab, recipes, and 404", () => {
     const paths = router.getRoutes().map(r => r.path)
     expect(paths).toContain("/")
     expect(paths).toContain("/particles")
     expect(paths).toContain("/vue-basics")
     expect(paths).toContain("/recipes")
+    expect(paths).toContain("/:pathMatch(.*)*")
   })
 
   it("does not register an event-portal surface", () => {

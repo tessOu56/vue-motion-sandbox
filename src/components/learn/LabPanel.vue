@@ -1,27 +1,21 @@
 <template>
   <section class="card space-y-4">
     <div>
-      <h3 class="text-xl font-bold text-gray-800">{{ title }}</h3>
-      <p v-if="subtitle" class="text-gray-600 mt-1">{{ subtitle }}</p>
+      <h3 class="text-xl font-bold">{{ title }}</h3>
+      <p v-if="subtitle" class="mt-1" style="color: var(--muted)">{{ subtitle }}</p>
     </div>
 
-    <div
-      v-if="reactHint"
-      class="rounded-lg bg-slate-50 border border-slate-200 p-4 text-sm"
-    >
-      <p class="font-semibold text-slate-700 mb-1">React 對照</p>
-      <p class="text-slate-600 leading-relaxed">{{ reactHint }}</p>
+    <div v-if="reactHint" class="hint-box">
+      <p class="font-semibold mb-1">React 對照</p>
+      <p class="leading-relaxed" style="color: var(--muted)">{{ reactHint }}</p>
     </div>
 
-    <div
-      v-if="vueHint"
-      class="rounded-lg bg-indigo-50 border border-indigo-100 p-4 text-sm"
-    >
-      <p class="font-semibold text-indigo-800 mb-1">Vue 重點</p>
-      <p class="text-indigo-700 leading-relaxed">{{ vueHint }}</p>
+    <div v-if="vueHint" class="hint-box hint-vue">
+      <p class="font-semibold mb-1">Vue 重點</p>
+      <p class="leading-relaxed" style="color: var(--muted)">{{ vueHint }}</p>
     </div>
 
-    <div class="rounded-xl border border-gray-100 bg-gray-50/80 p-5">
+    <div class="hint-slot">
       <slot />
     </div>
   </section>
@@ -35,3 +29,23 @@ defineProps({
   vueHint: { type: String, default: "" },
 })
 </script>
+
+<style scoped>
+.hint-box,
+.hint-slot {
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  padding: 1rem;
+  background: var(--bg);
+  font-size: 0.875rem;
+}
+
+.hint-vue {
+  background: #e7f3ec;
+  border-color: #c5ddce;
+}
+
+.hint-slot {
+  background: var(--bg-elevated);
+}
+</style>
