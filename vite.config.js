@@ -13,6 +13,11 @@ export default defineConfig(({ mode }) => ({
   },
   server: {
     port: 8080,
+    // Bind loopback only. Vite 5.4.x has no patch for CVE-2026-53571
+    // (Windows server.fs.deny bypass); that advisory requires --host / server.host.
+    host: "127.0.0.1",
+    strictPort: true,
+    fs: { strict: true },
   },
   build: {
     outDir: "dist",
